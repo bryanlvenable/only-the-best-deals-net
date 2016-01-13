@@ -1,6 +1,6 @@
 // Get all the packages
 var express = require('express'),
-    config  = require('./server/config/config');
+    config  = require('./config/config');
 
 var app = express(),
     port = config.port,
