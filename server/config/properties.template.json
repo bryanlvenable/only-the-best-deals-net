@@ -1,0 +1,11 @@
+{
+    "environment": "development",
+    "development": {
+        "secret": "SECRET-HERE",
+        "host": "https://localhost",
+        "port": "9000",
+        "mongo": {
+            "uri": "mongodb://localhost/only-the-best-deals-net"
+        }
+    }
+}
