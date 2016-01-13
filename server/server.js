@@ -1,8 +1,11 @@
+// server.js
+
 // Get all the packages
 var express = require('express'),
     config  = require('./config/config');
 
 var app = express(),
+    router = express.Router(),
     port = config.port,
     host = config.host;
 
