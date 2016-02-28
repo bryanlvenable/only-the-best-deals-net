@@ -18,11 +18,5 @@ app.get('/', function (req, res, next) {
     res.render('splash');
 });
 
-// Temp
-// Temp hello world routes
-// app.get('/', function (req, res) {
-//     res.send('Hello World!');
-// });
-
 app.listen(port);
 console.log('The best deals on the net are being served at ' + host + port);
