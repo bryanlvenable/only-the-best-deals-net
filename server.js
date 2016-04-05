@@ -1,9 +1,8 @@
 // server.js
-
-// Get all the packages
 var express = require('express'),
     config  = require('./config/config'),
-    exphbs = require('express-handlebars');
+    exphbs = require('express-handlebars'),
+    favicon = require('serve-favicon');
 
 var app = express(),
     router = express.Router(),
@@ -12,6 +11,8 @@ var app = express(),
     }),
     port = config.port,
     host = config.host;
+
+app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');

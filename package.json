@@ -19,6 +19,7 @@
   "homepage": "https://github.com/bryanlvenable/only-the-best-deals-net#readme",
   "dependencies": {
     "express": "~4.13.3",
-    "express-handlebars": "^2.0.1"
+    "express-handlebars": "^2.0.1",
+    "serve-favicon": "^2.3.0"
   }
 }
