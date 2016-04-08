@@ -1,0 +1,9 @@
+.logo {
+    font-family: 'Mr Dafoe', cursive;
+}
+
+.otbd-background {
+    background-color: #85bb65;
+    color: white;
+    text-shadow: -0.5px 0 DarkGreen, 0 0.5px DarkGreen, 0.5px 0 DarkGreen, 0 -0.5px DarkGreen;
+}
