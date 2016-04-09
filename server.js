@@ -26,6 +26,9 @@ app.use('/public', express.static('public/'));
 app.get('/', function (req, res, next) {
     res.render('splash');
 });
+app.get('/faq', function (req, res, next) {
+    res.render('faq');
+});
 
 app.listen(port);
 console.log('The best deals on the net are being served at ' + host + port);

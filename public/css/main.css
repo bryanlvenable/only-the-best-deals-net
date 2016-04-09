@@ -5,5 +5,33 @@
 .otbd-background {
     background-color: #85bb65;
     color: white;
-    text-shadow: -0.5px 0 DarkGreen, 0 0.5px DarkGreen, 0.5px 0 DarkGreen, 0 -0.5px DarkGreen;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
 }
+
+.horizontal-center {
+    text-align: center;
+}
+
+.otbd-link {
+    color: white;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
+}
+
+.otbd-link:hover {
+    color: white;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
+    text-decoration: none;
+}
+
+/*.facebook {
+    transform: scale(1.5);
+    float: left;
+}*/
+/*.twitter {
+    float: left;
+}
+
+.social {
+    display: inline;
+
+}*/
