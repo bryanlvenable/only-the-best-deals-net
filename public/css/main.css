@@ -1,0 +1,43 @@
+.logo {
+    font-family: 'Mr Dafoe', cursive;
+}
+
+.otbd-background {
+    background-color: #85bb65;
+    color: white;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
+}
+
+.horizontal-center {
+    text-align: center;
+}
+
+.otbd-link {
+    color: white;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
+}
+
+.otbd-link:hover {
+    color: white;
+    text-shadow: -0.25px 0 DarkGreen, 0 0.25px DarkGreen, 0.25px 0 DarkGreen, 0 -0.25px DarkGreen;
+    text-decoration: none;
+}
+
+.social {
+    position:relative;
+    text-align: center;
+    padding: 10px;
+
+
+}
+
+.facebook {
+    transform: scale(1.4);
+    margin: auto;
+    padding: inherit;
+}
+
+.twitter {
+    margin: auto;
+    padding: inherit;
+}

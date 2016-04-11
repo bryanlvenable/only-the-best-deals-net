@@ -1,2 +1,3 @@
 node_modules
-/server/config/properties.json
+bower_components
+/config/properties.json
