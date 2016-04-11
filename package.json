@@ -1,26 +1,26 @@
 {
-  "name": "onlythebestdeals.net",
-  "version": "0.0.0",
-  "description": "The best deals on the net",
-  "main": "server.js",
-  "scripts": {
-      "postinstall": "bower cache clean && bower install",
-    "test": "gulp test",
-    "start": "node server.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/bryanlvenable/only-the-best-deals-net.git"
-  },
-  "author": "Bryan L Venable",
-  "license": "UNLICENSED",
-  "bugs": {
-    "url": "https://github.com/bryanlvenable/only-the-best-deals-net/issues"
-  },
-  "homepage": "https://github.com/bryanlvenable/only-the-best-deals-net#readme",
-  "dependencies": {
-    "express": "~4.13.3",
-    "express-handlebars": "^2.0.1",
-    "serve-favicon": "^2.3.0"
-  }
+    "name": "onlythebestdeals.net",
+    "version": "0.0.0",
+    "description": "The best deals on the net",
+    "main": "server.js",
+    "scripts": {
+        "start": "node server.js",
+        "test": "gulp test",
+        "postinstall": "bower install"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/bryanlvenable/only-the-best-deals-net.git"
+    },
+    "author": "Bryan L Venable",
+    "license": "UNLICENSED",
+    "bugs": {
+        "url": "https://github.com/bryanlvenable/only-the-best-deals-net/issues"
+    },
+    "homepage": "https://github.com/bryanlvenable/only-the-best-deals-net#readme",
+    "dependencies": {
+        "express": "~4.13.3",
+        "express-handlebars": "^2.0.1",
+        "serve-favicon": "^2.3.0"
+    }
 }
