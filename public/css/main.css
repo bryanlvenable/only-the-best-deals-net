@@ -23,15 +23,21 @@
     text-decoration: none;
 }
 
-/*.facebook {
-    transform: scale(1.5);
-    float: left;
-}*/
-/*.twitter {
-    float: left;
+.social {
+    position:relative;
+    text-align: center;
+    padding: 10px;
+
+
 }
 
-.social {
-    display: inline;
+.facebook {
+    transform: scale(1.4);
+    margin: auto;
+    padding: inherit;
+}
 
-}*/
+.twitter {
+    margin: auto;
+    padding: inherit;
+}
