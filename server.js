@@ -1,6 +1,5 @@
 // server.js
 var express = require('express'),
-    config  = require('./config/config'),
     exphbs = require('express-handlebars'),
     favicon = require('serve-favicon');
 
@@ -8,9 +7,9 @@ var app = express(),
     router = express.Router(),
     hbs = exphbs.create({
         defaultLayout: 'main',
-    }),
-    port = config.port,
-    host = config.host;
+    });
+
+app.set('port', (process.env.PORT || 9000));
 
 app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
@@ -30,5 +29,6 @@ app.get('/faq', function (req, res, next) {
     res.render('faq');
 });
 
-app.listen(port);
-console.log('The best deals on the net are being served at ' + host + port);
+app.listen(app.get('port'), function() {
+  console.log('The best deals on the net are being served at port', app.get('port'));
+});
