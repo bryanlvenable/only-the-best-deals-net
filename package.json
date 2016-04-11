@@ -4,9 +4,9 @@
   "description": "The best deals on the net",
   "main": "server.js",
   "scripts": {
+      "postinstall": "bower cache clean && bower install",
     "test": "gulp test",
-    "start": "node server.js",
-    "postinstall": "bower cache clean && bower install"
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
