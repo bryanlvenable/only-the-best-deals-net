@@ -16,11 +16,11 @@ app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
 
-app.use('/jquery', express.static('bower_components/jquery/dist'));
-app.use('/bootstrap', express.static('bower_components/bootstrap/dist'));
-app.use('/components-font-awesome', express.static('bower_components/components-font-awesome'));
-app.use('/bootstrap-social', express.static('bower_components/bootstrap-social'));
-app.use('/public', express.static('public/'));
+app.use('/jquery', express.static(__dirname + '/bower_components/jquery/dist'));
+app.use('/bootstrap', express.static(__dirname + '/bower_components/bootstrap/dist'));
+app.use('/components-font-awesome', express.static(__dirname + '/bower_components/components-font-awesome'));
+app.use('/bootstrap-social', express.static(__dirname + '/bower_components/bootstrap-social'));
+app.use('/public', express.static(__dirname + '/public/'));
 
 app.get('/', function (req, res, next) {
     res.render('splash');
