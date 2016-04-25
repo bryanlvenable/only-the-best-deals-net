@@ -5,5 +5,8 @@ module.exports = function(app, route) {
     route.get('/faq', function (req, res, next) {
         res.render('faq');
     });
+    
+    // Amazon routes
+    route = require('./amazon')(route);
     return route;
 };
