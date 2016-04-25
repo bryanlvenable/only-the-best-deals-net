@@ -27,7 +27,11 @@ module.exports = function (router) {
         });
     };
 
+    router.get('/amazon', function (req, res, next) {
+        res.render('search');
+    });
     router.get('/amazon/search', search);
+
 
     return router;
 };
