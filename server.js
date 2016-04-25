@@ -1,15 +1,21 @@
 // server.js
 var express = require('express'),
     exphbs = require('express-handlebars'),
-    favicon = require('serve-favicon');
+    favicon = require('serve-favicon'),
+    config = require('config');
 
 var app = express(),
-    router = express.Router(),
+    Router = express.Router(),
+    router = require('./routes/routes')(app, Router),
     hbs = exphbs.create({
-        defaultLayout: 'main',
+        defaultLayout: 'main'
     });
 
-app.set('port', (process.env.PORT || 9000));
+    if (config.has('port')) {
+        var port = config.get('port');
+    }
+
+app.set('port', (process.env.PORT || port));
 
 app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
@@ -21,13 +27,7 @@ app.use('/bootstrap', express.static(__dirname + '/bower_components/bootstrap/di
 app.use('/components-font-awesome', express.static(__dirname + '/bower_components/components-font-awesome'));
 app.use('/bootstrap-social', express.static(__dirname + '/bower_components/bootstrap-social'));
 app.use('/public', express.static(__dirname + '/public/'));
-
-app.get('/', function (req, res, next) {
-    res.render('splash');
-});
-app.get('/faq', function (req, res, next) {
-    res.render('faq');
-});
+app.use('/', router);
 
 app.listen(app.get('port'), function() {
   console.log('The best deals on the net are being served at port', app.get('port'));
