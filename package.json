@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server.js",
     "test": "gulp test",
-    "postinstall": "bower cache clean && bower install"
+    "postinstall": "bower install"
   },
   "repository": {
     "type": "git",
@@ -19,7 +19,9 @@
   },
   "homepage": "https://github.com/bryanlvenable/only-the-best-deals-net#readme",
   "dependencies": {
+    "aws-lib": "^0.3.0",
     "bower": "^1.7.9",
+    "config": "^1.20.1",
     "express": "~4.13.3",
     "express-handlebars": "^2.0.1",
     "serve-favicon": "^2.3.0"
