@@ -1,15 +1,14 @@
 module.exports = function (router) {
+    var Search = require('../models/search-models'),
+    search = new Search();
 
     var getResults = function(req, res, next) {
-        var Search = require('../models/search-models'),
-        search = new Search();
         var query = {
-            Keywords: "hammock"
+            Keywords: req.query.query
         };
-        console.log("req.body: ", req.body);
+        res.render('search');
         search.search(query, function(err, results) {
             console.log("results: ", results);
-            res.render('search');
         });
     };
 
