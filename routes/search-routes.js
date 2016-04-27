@@ -4,11 +4,12 @@ module.exports = function (router) {
 
     var getResults = function(req, res, next) {
         var query = {
-            Keywords: req.query.query
+            Keywords: req.query.query,
+            SearchIndex: "All"
         };
         res.render('search');
         search.search(query, function(err, results) {
-            // TODO: do something with the results!
+            // TODO: do something with the results.Items!
         });
     };
 
