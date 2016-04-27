@@ -6,8 +6,7 @@ module.exports = function(app, route) {
         res.render('faq');
     });
 
-    // Amazon routes
-    route = require('./amazon')(route);
+    route = require('./search-routes')(route);
 
     return route;
 };
