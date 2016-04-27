@@ -8,7 +8,7 @@ module.exports = function (router) {
         };
         res.render('search');
         search.search(query, function(err, results) {
-            console.log("results: ", results);
+            // TODO: do something with the results!
         });
     };
 
