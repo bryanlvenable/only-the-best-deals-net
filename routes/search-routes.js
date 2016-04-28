@@ -7,7 +7,9 @@ module.exports = function (router) {
             Keywords: req.query.query,
             SearchIndex: "All"
         };
-        res.render('search');
+        res.render('search', {
+            placeholder: req.query.query
+        });
         search.search(query, function(err, results) {
             // TODO: do something with the results.Items!
         });
