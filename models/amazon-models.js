@@ -9,14 +9,20 @@ Amazon.prototype.search = function(options, callback) {
 
     // If no query or empty query
     if (options.Keywords === "" || !options.Keywords) {
-        return callback(null, []);
+        return callback(null, undefined);
     }
 
     this.prodAdv.call("ItemSearch", options, function(err, result) {
-        console.log("result.Items: ", result.Items);
-        // TODO: organize the results here.
-        // TODO: do something with the results.Items!
         this.results = [];
+
+        result.Items.Item.forEach(function(item) {
+            this.entry = {
+                url: item.DetailPageURL,
+                title: item.ItemAttributes.Title
+            };
+            this.results.push(this.entry);
+        });
+
         return callback(err, results);
     });
 };

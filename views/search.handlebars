@@ -20,7 +20,7 @@
 {{#if results}}
     <div class="results">
         {{#each results}}
-          <li>{{this}}</li>
+          <div><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
         {{/each}}
     </div>
 {{/if}}
