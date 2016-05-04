@@ -8,11 +8,18 @@ Amazon.prototype.search = function(options, callback) {
     this.prodAdv = this.aws.createProdAdvClient(this.amazonConfig.accessKeyId, this.amazonConfig.accessKeySecret, this.amazonConfig.associateId);
 
     // If no query or empty query
-    if (options.Keywords === "" || !options.Keywords) {
+    if (options.keywords === "" || !options.keywords) {
         return callback(null, undefined);
     }
 
-    this.prodAdv.call("ItemSearch", options, function(err, result) {
+    this.query = {
+        Keywords: options.keywords,
+        SearchIndex: "SportingGoods",
+        ResponseGroup: "Images"
+    };
+    console.log(this.query);
+
+    this.prodAdv.call("ItemSearch", this.query, function(err, result) {
         this.results = [];
         console.log("result keys: ", Object.keys(result.Items.Item[0]));
         // console.log("result keys: ", result.Items.TotalResults);

@@ -3,12 +3,11 @@ module.exports = function (router) {
     search = new Search();
 
     var getResults = function(req, res, next) {
-        var query = {
-            Keywords: req.query.query,
-            SearchIndex: "SportingGoods",
-            ResponseGroup: "Images"
+        var options = {
+            keywords: req.query.query
         };
-        search.search(query, function(err, results) {
+
+        search.search(options, function(err, results) {
             res.render('search', {
                 placeholder: req.query.query,
                 results: results
