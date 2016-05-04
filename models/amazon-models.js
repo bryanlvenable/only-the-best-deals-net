@@ -17,7 +17,6 @@ Amazon.prototype.search = function(options, callback) {
         SearchIndex: "SportingGoods",
         ResponseGroup: "ItemAttributes, Images"
     };
-    console.log(this.query);
 
     this.prodAdv.call("ItemSearch", this.query, function(err, result) {
         this.results = [];
