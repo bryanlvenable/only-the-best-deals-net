@@ -5,7 +5,8 @@ module.exports = function (router) {
     var getResults = function(req, res, next) {
         var query = {
             Keywords: req.query.query,
-            SearchIndex: "All"
+            SearchIndex: "SportingGoods",
+            ResponseGroup: "Images"
         };
         search.search(query, function(err, results) {
             res.render('search', {

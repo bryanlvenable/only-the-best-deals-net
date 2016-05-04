@@ -18,9 +18,12 @@
     </div>
 </div>
 {{#if results}}
-    <div class="results">
+    <div class="row results">
         {{#each results}}
-          <div><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
+            <div class="col-md-3">
+                <img src="{{this.image}}">
+                <div><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
+            </div>
         {{/each}}
     </div>
 {{/if}}
