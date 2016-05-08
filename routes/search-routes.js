@@ -2,12 +2,9 @@ module.exports = function (router) {
     var Search = require('../models/search-models'),
     search = new Search();
 
-    var getResults = function(req, res, next) {
-        var options = {
-            keywords: req.query.query
-        };
+    var resultsGet = function(req, res, next) {
 
-        search.search(options, function(err, results) {
+        search.search(req.query.query, function(err, results) {
             res.render('search', {
                 placeholder: req.query.query,
                 results: results
@@ -15,7 +12,7 @@ module.exports = function (router) {
         });
     };
 
-    router.get('/search', getResults);
+    router.get('/search', resultsGet);
 
     return router;
 };
