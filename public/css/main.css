@@ -5,7 +5,7 @@ Accent color: #b0bb65
 */
 .logo {
     font-family: 'Mr Dafoe', cursive;
-    margin: auto;
+    margin: auto; /* TODO - get rid of this */
     padding: 0.1em;
 }
 
@@ -21,7 +21,7 @@ Accent color: #b0bb65
 .otbd-background {
     background-color: #85bb65;
     color: white;
-    text-shadow: -0.01em 0 DarkGreen, 0 0.01em DarkGreen, 0.01em 0 DarkGreen, 0 -0.01em DarkGreen;
+    text-shadow: -0.005em 0 DarkGreen, 0 0.005em DarkGreen, 0.005em 0 DarkGreen, 0 -0.005em DarkGreen;
 }
 
 .horizontal-center {
@@ -30,12 +30,12 @@ Accent color: #b0bb65
 
 .otbd-link {
     color: white;
-    text-shadow: -0.01em 0 DarkGreen, 0 0.01em DarkGreen, 0.01em 0 DarkGreen, 0 -0.01em DarkGreen;
+    text-shadow: -0.005em 0 DarkGreen, 0 0.005em DarkGreen, 0.005em 0 DarkGreen, 0 -0.005em DarkGreen;
 }
 
 .otbd-link:hover {
     color: white;
-    text-shadow: -0.01em 0 DarkGreen, 0 0.01em DarkGreen, 0.01em 0 DarkGreen, 0 -0.01em DarkGreen;
+    text-shadow: -0.005em 0 DarkGreen, 0 0.005em DarkGreen, 0.005em 0 DarkGreen, 0 -0.005em DarkGreen;
     text-decoration: none;
 }
 
