@@ -1,9 +1,4 @@
-var Amazon = function() {
-    // this.config = require('config');
-    // this.aws = require('aws-lib');
-    // this.amazonConfig = this.config.get('amazonAssociates');
-    // this.prodAdv = this.aws.createProdAdvClient(this.amazonConfig.accessKeyId, this.amazonConfig.accessKeySecret, this.amazonConfig.associateId);
-};
+var Amazon = function() {};
 
 Amazon.prototype.search = function(query, callback) {
 
@@ -12,18 +7,33 @@ Amazon.prototype.search = function(query, callback) {
         return callback(null, undefined);
     }
 
-    this.options = {
-        keywords: query,
-        searchIndex: "SportingGoods"
-    };
+    var helpers = new Helpers();
 
-    this.helpers = new Helpers();
-
-    this.helpers.searchIndex(this.options, function(err, results) {
+    helpers.findIndices(query, function(err, indices) {
         if (err) {
+            console.error(err);
             return callback(err, {});
         }
-        return callback(null, results);
+        console.log("indices: ", indices);
+        var allResults = [];
+        indices.forEach(function(index) {
+            this.options = {
+                keywords: query,
+                searchIndex: index
+            };
+
+            helpers.searchByIndex(this.options, function(err, results) {
+                console.log("results in amazon-models.js: ", Object.keys(results));
+                if (err) {
+                    console.error(err);
+                    return callback(err, {});
+                }
+
+                allResults = allResults.concat(results);
+
+                return callback(null, allResults);
+            });
+        });
     });
 };
 
@@ -35,7 +45,7 @@ var Helpers = function() {
 };
 
 
-Helpers.prototype.searchAll = function(query, callback) {
+Helpers.prototype.findIndices = function(query, callback) {
 
     this.options = {
         Keywords: query,
@@ -43,21 +53,38 @@ Helpers.prototype.searchAll = function(query, callback) {
     };
 
     this.prodAdv.call("ItemSearch", this.options, function(err, result) {
-        this.results = [];
+        if (err) {
+            console.error(err);
+            return callback(err, []);
+        }
+        if (result.Items.Request.IsValid === "False") {
+            console.warn(new Error("invalid request to Amazon"));
+            return callback(err, []);
+        }
+        this.productGroups = {};
+        this.Indices = [];
+        this.indicesConverter = {
+            "Sports": "SportingGoods",
+            "Lawn & Patio": "LawnAndGarden"
+        };
 
         result.Items.Item.forEach(function(item) {
-            this.entry = {
-                url: item.DetailPageURL,
-                title: item.ItemAttributes.Title
-            };
-            this.results.push(this.entry);
+            this.productGroup = item.ItemAttributes.ProductGroup;
+            if(this.productGroups[this.productGroup]) {
+                this.productGroups[this.productGroup] = this.productGroups[this.productGroup] + 1;
+            } else {
+                this.Indices.push(this.indicesConverter[this.productGroup]);
+                this.productGroups[this.productGroup] = 1;
+            }
         });
 
-        return callback(err, results);
+        // return callback(err, this.Indices); // NOTE - LawnAndGarden may not be working
+        return callback(err, ["SportingGoods"]);
+
     });
 };
 
-Helpers.prototype.searchIndex = function(queryParams, callback) {
+Helpers.prototype.searchByIndex = function(queryParams, callback) {
 
     this.options = {
         Keywords: queryParams.keywords,
@@ -66,18 +93,31 @@ Helpers.prototype.searchIndex = function(queryParams, callback) {
     };
 
     this.prodAdv.call("ItemSearch", this.options, function(err, result) {
+        if (err) {
+            console.error(err);
+            return callback(err, []);
+        }
+        if (result.Items.Request.IsValid === "False") {
+            console.warn(new Error("invalid request to Amazon"));
+            return callback(err, []);
+        }
         this.results = [];
 
+
         result.Items.Item.forEach(function(item) {
-            this.entry = {
+            var entry = {
                 url: item.DetailPageURL,
-                title: item.ItemAttributes.Title,
-                image: item.MediumImage.URL
+                title: item.ItemAttributes.Title
             };
-            this.results.push(this.entry);
+            if (item.MediumImage) {
+                entry.image = item.MediumImage.URL;
+                this.results.push(entry);
+            }
         });
 
-        return callback(err, results);
+        console.log("this.results: ", Object.keys(this.results));
+
+        return callback(err, this.results);
     });
 };
 
