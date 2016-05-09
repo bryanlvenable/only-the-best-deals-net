@@ -14,8 +14,9 @@ Amazon.prototype.search = function(query, callback) {
             console.error(err);
             return callback(err, {});
         }
-        console.log("indices: ", indices);
+
         var allResults = [];
+        
         indices.forEach(function(index) {
             this.options = {
                 keywords: query,
@@ -23,7 +24,6 @@ Amazon.prototype.search = function(query, callback) {
             };
 
             helpers.searchByIndex(this.options, function(err, results) {
-                console.log("results in amazon-models.js: ", Object.keys(results));
                 if (err) {
                     console.error(err);
                     return callback(err, {});
@@ -109,13 +109,12 @@ Helpers.prototype.searchByIndex = function(queryParams, callback) {
                 url: item.DetailPageURL,
                 title: item.ItemAttributes.Title
             };
-            if (item.MediumImage) {
+            if (item.MediumImage && item.ItemAttributes.ListPrice) {
                 entry.image = item.MediumImage.URL;
+                entry.price = item.ItemAttributes.ListPrice.FormattedPrice;
                 this.results.push(entry);
             }
         });
-
-        console.log("this.results: ", Object.keys(this.results));
 
         return callback(err, this.results);
     });
