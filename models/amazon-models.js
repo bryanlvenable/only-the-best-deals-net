@@ -16,7 +16,7 @@ Amazon.prototype.search = function(query, callback) {
         }
 
         var allResults = [];
-        
+
         indices.forEach(function(index) {
             this.options = {
                 keywords: query,
@@ -89,7 +89,7 @@ Helpers.prototype.searchByIndex = function(queryParams, callback) {
     this.options = {
         Keywords: queryParams.keywords,
         SearchIndex: queryParams.searchIndex,
-        ResponseGroup: "ItemAttributes, Images"
+        ResponseGroup: "ItemAttributes, Images, OfferSummary"
     };
 
     this.prodAdv.call("ItemSearch", this.options, function(err, result) {
@@ -105,13 +105,14 @@ Helpers.prototype.searchByIndex = function(queryParams, callback) {
 
 
         result.Items.Item.forEach(function(item) {
+            // console.log("item.OfferSummary: ", item.OfferSummary);
             var entry = {
                 url: item.DetailPageURL,
                 title: item.ItemAttributes.Title
             };
-            if (item.MediumImage && item.ItemAttributes.ListPrice) {
+            if (item.MediumImage && item.OfferSummary.LowestNewPrice && item.OfferSummary.LowestNewPrice.FormattedPrice) {
                 entry.image = item.MediumImage.URL;
-                entry.price = item.ItemAttributes.ListPrice.FormattedPrice;
+                entry.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
                 this.results.push(entry);
             }
         });
