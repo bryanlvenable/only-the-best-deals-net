@@ -1,4 +1,6 @@
-var Amazon = function() {};
+var Amazon = function(config) {
+    this.config = config;
+};
 
 Amazon.prototype.search = function(query, callback) {
 
@@ -7,7 +9,7 @@ Amazon.prototype.search = function(query, callback) {
         return callback(null, undefined);
     }
 
-    var helpers = new Helpers();
+    var helpers = new Helpers(this.config);
 
     helpers.findIndices(query, function(err, indices) {
         if (err) {
@@ -37,10 +39,9 @@ Amazon.prototype.search = function(query, callback) {
     });
 };
 
-var Helpers = function() {
-    this.config = require('config');
+var Helpers = function(config) {
     this.aws = require('aws-lib');
-    this.amazonConfig = this.config.get('amazonAssociates');
+    this.amazonConfig = config.get('amazonAssociates');
     this.prodAdv = this.aws.createProdAdvClient(this.amazonConfig.accessKeyId, this.amazonConfig.accessKeySecret, this.amazonConfig.associateId);
 };
 
@@ -68,6 +69,7 @@ Helpers.prototype.findIndices = function(query, callback) {
             "Lawn & Patio": "LawnAndGarden"
         };
 
+        // Find out what product groups are being displayed
         result.Items.Item.forEach(function(item) {
             this.productGroup = item.ItemAttributes.ProductGroup;
             if(this.productGroups[this.productGroup]) {
@@ -89,7 +91,9 @@ Helpers.prototype.searchByIndex = function(queryParams, callback) {
     this.options = {
         Keywords: queryParams.keywords,
         SearchIndex: queryParams.searchIndex,
-        ResponseGroup: "ItemAttributes, Images, OfferSummary"
+        ResponseGroup: "Large"
+        // ResponseGroup: "ItemAttributes, Images, OfferFull",
+        // Sort: "sale-flag"
     };
 
     this.prodAdv.call("ItemSearch", this.options, function(err, result) {
@@ -105,16 +109,23 @@ Helpers.prototype.searchByIndex = function(queryParams, callback) {
 
 
         result.Items.Item.forEach(function(item) {
-            // console.log("item.OfferSummary: ", item.OfferSummary);
-            var entry = {
-                url: item.DetailPageURL,
-                title: item.ItemAttributes.Title
-            };
-            if (item.MediumImage && item.OfferSummary.LowestNewPrice && item.OfferSummary.LowestNewPrice.FormattedPrice) {
-                entry.image = item.MediumImage.URL;
-                entry.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
-                this.results.push(entry);
-            }
+            // if (item.Offer) {
+                // console.log("item: ", item);
+                // console.log("item.OfferSummary: ", item.OfferSummary);
+                // console.log("item.Offers: ", item.Offers);
+                console.log("item.Offer.OfferListing.OfferListingId: ", item.Offer);
+
+                var entry = {
+                    url: item.DetailPageURL,
+                    title: item.ItemAttributes.Title
+                };
+                // if (item.MediumImage && item.OfferSummary.LowestNewPrice && item.OfferSummary.LowestNewPrice.FormattedPrice) {
+                    if (item.MediumImage) {
+                    entry.image = item.MediumImage.URL;
+                    // entry.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
+                    this.results.push(entry);
+                }
+            // }
         });
 
         return callback(err, this.results);
