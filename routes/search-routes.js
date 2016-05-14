@@ -1,6 +1,7 @@
 module.exports = function (router) {
     var Search = require('../models/search-models'),
-    search = new Search();
+        config = require('config-heroku'),
+        search = new Search(config);
 
     var resultsGet = function(req, res, next) {
 

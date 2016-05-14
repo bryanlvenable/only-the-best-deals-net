@@ -42,7 +42,7 @@ Amazon.prototype.search = function(query, callback) {
 
 var Helpers = function(config) {
     this.aws = require('aws-lib');
-    this.amazonConfig = config.get('amazonAssociates');
+    this.amazonConfig = config.amazonAssociates;
     this.prodAdv = this.aws.createProdAdvClient(this.amazonConfig.accessKeyId, this.amazonConfig.accessKeySecret, this.amazonConfig.associateId);
 };
 

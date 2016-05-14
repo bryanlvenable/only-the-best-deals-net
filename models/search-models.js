@@ -1,6 +1,6 @@
-var Search = function() {
+var Search = function(config) {
     'use strict';
-    this.config = require('config');
+    this.config = config;
     this.Amazon = require('./amazon-models.js');
 };
 
