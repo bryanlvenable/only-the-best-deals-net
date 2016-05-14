@@ -1,6 +1,7 @@
 var Search = function() {
-    this.Amazon = require('./amazon-models.js');
+    'use strict';
     this.config = require('config');
+    this.Amazon = require('./amazon-models.js');
 };
 
 Search.prototype.search = function(options, callback) {

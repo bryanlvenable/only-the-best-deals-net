@@ -1,4 +1,5 @@
 var Amazon = function(config) {
+    'use strict';
     this.config = config;
 };
 
