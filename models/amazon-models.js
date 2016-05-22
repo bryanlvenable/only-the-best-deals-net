@@ -12,6 +12,7 @@ var Amazon = function(config) {
 
     // Internal methods
     this.amazonApi = function(options, callback) {
+        console.time('calling Amazon');
         this.prodAdv.call("ItemSearch", options, function(err, result) {
             if (err) {
                 console.error(err);
@@ -22,6 +23,7 @@ var Amazon = function(config) {
                 return callback(err, []);
             }
 
+            console.timeEnd('calling Amazon');
             return callback(err, result.Items.Item);
         });
     };
