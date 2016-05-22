@@ -27,6 +27,7 @@ var Amazon = function(config) {
     };
 
     this.findIndices = function(query, callback) {
+        console.time('findIndices');
         this.options = {
             Keywords: query,
             SearchIndex: "All"
@@ -53,18 +54,19 @@ var Amazon = function(config) {
                 }
             });
 
+            console.timeEnd('findIndices');
             // return callback(null, this.indices);
-            return callback(err, ["SportingGoods"]);
+            return callback(err, ["LawnAndGarden"]);
         });
     };
 
     this.searchByIndex = function(query, callback) {
+        console.time('searchByIndex');
         this.options = {
             Keywords: query.keywords,
             SearchIndex: query.searchIndex,
-            ResponseGroup: "Large"
-            // ResponseGroup: "ItemAttributes, Images, OfferFull",
-            // Sort: "sale-flag"
+            ResponseGroup: "ItemAttributes, Images, OfferSummary",
+            Sort: "relevancerank"
         };
 
         this.amazonApi(this.options, function(err, result) {
@@ -76,14 +78,21 @@ var Amazon = function(config) {
                     title: item.ItemAttributes.Title
                 };
 
-                // if (item.MediumImage && item.OfferSummary.LowestNewPrice && item.OfferSummary.LowestNewPrice.FormattedPrice) {
-                    if (item.MediumImage) {
-                    entry.image = item.MediumImage.URL;
-                    // entry.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
-                    results.push(entry);
+                if (item.OfferSummary &&
+                    item.OfferSummary.LowestNewPrice &&
+                    item.OfferSummary.LowestNewPrice.FormattedPrice
+                    ) {
+                    entry.price = item.OfferSummary.LowestNewPrice.FormattedPrice;
                 }
+
+                if (item.MediumImage) {
+                    entry.image = item.MediumImage.URL;
+                }
+
+                results.push(entry);
             });
 
+            console.timeEnd('searchByIndex');
             return callback(null, results);
         });
     };
