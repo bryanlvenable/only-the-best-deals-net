@@ -5,7 +5,7 @@ var Search = function(config) {
 };
 
 Search.prototype.search = function(options, callback) {
-    this.amazon = new this.Amazon(this.config);
+    this.amazon = new this.Amazon(this.config.amazonAssociates);
     this.amazon.search(options, function(err, results) {
         callback(err, results);
     });
