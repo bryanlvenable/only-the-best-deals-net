@@ -4,10 +4,12 @@
 {{#if results}}
     <div class="row results">
         {{#each results}}
-            <div class="col-md-3">
-                <img src="{{this.image}}">
-                <span>{{this.price}}</span>
-                <div><a href="{{this.url}}" target="_blank">{{this.title}}</a></div>
+            <div class="col-md-3 card">
+                <div class="product">
+                    <img class="product-image" src="{{this.image}}">
+                    <span class="product-price">{{this.price}}</span>
+                    <div class="product-title"><a class="product-link" href="{{this.url}}" target="_blank">{{this.title}}</a></div>
+                </div>
             </div>
         {{/each}}
     </div>

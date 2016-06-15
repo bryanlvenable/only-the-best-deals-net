@@ -1,8 +1,9 @@
 /*
-Dominant color: #85bb65
-Support color: #65bb70
-Accent color: #b0bb65
+Dominant color: #99cc66 rgb(153, 204, 102) emulating #85bb65 Dollar bill
+Support color: #66cc66 rgb(102, 204, 102)
+Accent color: #cccc66 rgb(204, 204, 102)
 */
+
 .logo {
     font-family: 'Mr Dafoe', cursive;
     margin: auto; /* TODO - get rid of this */
@@ -19,7 +20,7 @@ Accent color: #b0bb65
 
 
 .otbd-background {
-    background-color: #85bb65;
+    background-color: #99cc66;
     color: white;
     text-shadow: -0.005em 0 DarkGreen, 0 0.005em DarkGreen, 0.005em 0 DarkGreen, 0 -0.005em DarkGreen;
 }
