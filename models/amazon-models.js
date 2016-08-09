@@ -12,7 +12,6 @@ var Amazon = function(config) {
 
     // Internal methods
     this.amazonApi = function(options, callback) {
-        // console.time('calling Amazon');
         this.prodAdv.call("ItemSearch", options, function(err, result) {
             if (err) {
                 console.error(err);
@@ -23,13 +22,11 @@ var Amazon = function(config) {
                 return callback(err, []);
             }
 
-            // console.timeEnd('calling Amazon');
             return callback(err, result.Items.Item);
         });
     };
 
     this.findIndices = function(query, callback) {
-        // console.time('findIndices');
         this.options = {
             Keywords: query,
             SearchIndex: "All"
@@ -58,14 +55,12 @@ var Amazon = function(config) {
                 }
             });
 
-            // console.timeEnd('findIndices');
             // return callback(null, indices);
             return callback(err, ["LawnAndGarden"]);
         });
     };
 
     this.searchByIndex = function(query, callback) {
-        console.time('searchByIndex');
         this.options = {
             Keywords: query.keywords,
             SearchIndex: query.searchIndex,
@@ -96,7 +91,6 @@ var Amazon = function(config) {
                 results.push(entry);
             });
 
-            console.timeEnd('searchByIndex');
             return callback(null, results);
         });
     };
