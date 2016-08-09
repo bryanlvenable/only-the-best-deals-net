@@ -12,7 +12,7 @@ var Amazon = function(config) {
 
     // Internal methods
     this.amazonApi = function(options, callback) {
-        console.time('calling Amazon');
+        // console.time('calling Amazon');
         this.prodAdv.call("ItemSearch", options, function(err, result) {
             if (err) {
                 console.error(err);
@@ -23,19 +23,19 @@ var Amazon = function(config) {
                 return callback(err, []);
             }
 
-            console.timeEnd('calling Amazon');
+            // console.timeEnd('calling Amazon');
             return callback(err, result.Items.Item);
         });
     };
 
     this.findIndices = function(query, callback) {
-        console.time('findIndices');
+        // console.time('findIndices');
         this.options = {
             Keywords: query,
             SearchIndex: "All"
         };
 
-        this.amazonApi(this.options, function(err, result) {
+        this.amazonApi(this.options, function(err, results) {
             let productGroups = {};
             let indices = [];
             let indicesConverter = {
@@ -44,20 +44,22 @@ var Amazon = function(config) {
             };
 
             // Find out what product groups are being displayed
-            result.forEach(function(item) {
-                // console.log(item);
-
+            results.forEach(function(item) {
                 let productGroup = item.ItemAttributes.ProductGroup;
                 if(productGroups[productGroup]) {   // If product group exists add one to count
                     productGroups[productGroup] = productGroups[productGroup] + 1;
                 } else {    // Otherwise add it and initialize its count
-                    indices.push(indicesConverter[productGroup]);
-                    productGroups[productGroup] = 1;
+                    // Check if we support that current index
+                    // If we support it, it will be in indicesConverter
+                    if (indicesConverter[productGroup] !== undefined) {
+                        indices.push(indicesConverter[productGroup]);
+                        productGroups[productGroup] = 1;
+                    }
                 }
             });
 
-            console.timeEnd('findIndices');
-            // return callback(null, this.indices);
+            // console.timeEnd('findIndices');
+            // return callback(null, indices);
             return callback(err, ["LawnAndGarden"]);
         });
     };
