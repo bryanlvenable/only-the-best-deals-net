@@ -6,9 +6,11 @@
         {{#each results}}
             <div class="col-md-3 card">
                 <div class="product">
+                    <div class="product-price">
+                        <span class="product-price-reduced">{{this.price}}</span>
+                        <span class="product-price-original">{{this.price}}</span>
+                    </div>
                     <img class="product-image" src="{{this.image}}">
-                    <span class="product-price-original">{{this.price}}</span>
-                    <span class="product-price-reduced">{{this.price}}</span>
                     <div class="product-title"><a class="product-link" href="{{this.url}}" target="_blank">{{this.title}}</a></div>
                 </div>
             </div>

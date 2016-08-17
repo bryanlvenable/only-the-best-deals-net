@@ -21,7 +21,15 @@ Support color: navy
 }
 
 .product-image {
+    /*text-align: center;*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-price {
     text-align: center;
+    font-size: 2em;
 }
 
 .product-price-original {

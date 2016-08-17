@@ -5,14 +5,12 @@ module.exports = function (router) {
 
     var resultsGet = function(req, res, next) {
 
-        console.time('Searching');
         search.search(req.query.q, function(err, results) {
 
             res.render('search', {
                 placeholder: req.query.q,
                 results: results
             });
-            console.timeEnd('Searching');
         });
     };
 
