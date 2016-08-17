@@ -8,7 +8,8 @@ var app = express(),
     Router = express.Router(),
     router = require('./routes/routes')(app, Router),
     hbs = exphbs.create({
-        defaultLayout: 'main'
+        defaultLayout: 'main',
+        partialsDir: ['views/partials/']
     });
 
     if (config.has('port')) {

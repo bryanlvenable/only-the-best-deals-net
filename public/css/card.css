@@ -1,0 +1,54 @@
+/*
+Dominant color: #99cc66 rgb(153, 204, 102) emulating #85bb65 Dollar bill
+Support color: #66cc66 rgb(102, 204, 102)
+Accent color: #cccc66 rgb(204, 204, 102)
+Might drop the colors above for the following:
+Dominant color: teal
+Support color: navy
+*/
+
+.card {
+    border: 0.01em solid lightGrey;
+    border-radius: 0.25em;
+    -webkit-background-clip: padding-box; /* for Safari */
+    background-clip: padding-box; /* for IE9+, Firefox 4+, Opera, Chrome */
+
+    margin: 1em;
+}
+
+.product {
+    opacity: 2;
+}
+
+.product-image {
+    /*text-align: center;*/
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.product-price {
+    text-align: center;
+    font-size: 2em;
+}
+
+.product-price-original {
+    color: black;
+    text-decoration: line-through;
+}
+
+.product-price-reduced {
+    color: #99cc66;
+}
+
+.product-title {
+    color: black;
+}
+
+.product-link {
+    color: black;
+}
+
+.product-link:hover {
+    text-decoration: none;
+}

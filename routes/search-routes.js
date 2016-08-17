@@ -1,21 +1,20 @@
 module.exports = function (router) {
     var Search = require('../models/search-models'),
-    search = new Search();
+        config = require('config-heroku'),
+        search = new Search(config);
 
-    var getResults = function(req, res, next) {
-        var query = {
-            Keywords: req.query.query,
-            SearchIndex: "All"
-        };
-        search.search(query, function(err, results) {
+    var resultsGet = function(req, res, next) {
+
+        search.search(req.query.q, function(err, results) {
+
             res.render('search', {
-                placeholder: req.query.query,
+                placeholder: req.query.q,
                 results: results
             });
         });
     };
 
-    router.get('/search', getResults);
+    router.get('/search', resultsGet);
 
     return router;
 };
