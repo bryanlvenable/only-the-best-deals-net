@@ -6,6 +6,10 @@ module.exports = function (router) {
     var resultsGet = function(req, res, next) {
 
         search.search(req.query.q, function(err, results) {
+            if (err) {
+                console.log(err);
+                res.render('home');
+            }
 
             res.render('search', {
                 placeholder: req.query.q,
