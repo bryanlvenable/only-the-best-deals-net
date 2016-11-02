@@ -5,7 +5,7 @@ if (process.env.NODE_ENV === 'production') {
         "amazonAssociates": {
             "accessKeyId": process.env.AMAZON_ID,
             "accessKeySecret": process.env.AMAZON_KEY,
-            "associateId": AMAZON_ASSOCIATE_ID
+            "associateId": process.env.AMAZON_ASSOCIATE_ID
         }
     };
 } else {
