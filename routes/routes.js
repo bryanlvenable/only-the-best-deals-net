@@ -1,4 +1,5 @@
 module.exports = function(app, route) {
+    'use strict';
     route.get('/', function (req, res, next) {
         res.render('home');
     });
