@@ -15,7 +15,7 @@ var app = express(),
 
 app.set('port', (process.env.PORT || 9000));
 
-// app.use(favicon(__dirname + '/public/assets/favicon.ico'));
+app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
 app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
