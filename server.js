@@ -1,4 +1,5 @@
 // server.js
+'use strict';
 var express = require('express'),
     exphbs = require('express-handlebars'),
     favicon = require('serve-favicon'),
