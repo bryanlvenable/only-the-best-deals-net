@@ -2,7 +2,7 @@
 var express = require('express'),
     exphbs = require('express-handlebars'),
     favicon = require('serve-favicon'),
-    config = require('config');
+    config = require('./config/config.js');
 
 var app = express(),
     Router = express.Router(),
@@ -12,11 +12,7 @@ var app = express(),
         partialsDir: ['views/partials/']
     });
 
-    if (config.has('port')) {
-        var port = config.get('port');
-    }
-
-app.set('port', (process.env.PORT || port));
+app.set('port', (process.env.PORT || 9000));
 
 // app.use(favicon(__dirname + '/public/assets/favicon.ico'));
 
