@@ -1,7 +1,7 @@
 module.exports = function (router) {
     'use strict';
     var Search = require('../models/search-models'),
-        config = require('config-heroku'),
+        config = require('../config/config.js'),
         search = new Search(config);
 
     var resultsGet = function(req, res, next) {
