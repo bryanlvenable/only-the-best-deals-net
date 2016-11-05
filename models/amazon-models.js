@@ -11,6 +11,7 @@ var Amazon = function(config) {
     this.prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
     this.Request = require('./helpers/api-request.js');
     this.request = new this.Request(config);
+    let is = require('is_js');
 
     // Internal methods
     this.amazonApi = function(options, callback) {
@@ -19,8 +20,14 @@ var Amazon = function(config) {
                     console.error(err);
                     return callback(err, []);
                 }
-                if (results.Items.Request.IsValid === "False") {
-                    console.warn(new Error("invalid request to Amazon"));
+                if (is.existy(results.Items) && results.Items.Request.IsValid === "False") {
+                    let err = new Error("invalid request to Amazon");
+                    console.warn(err);
+                    return callback(err, []);
+                }
+                if (is.not.existy(results.Items) || is.not.existy(results.Items.Item)) {
+                    let err = new Error("response contains no items :(");
+                    console.warn(err);
                     return callback(err, []);
                 }
 

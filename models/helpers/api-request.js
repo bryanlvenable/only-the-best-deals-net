@@ -15,15 +15,15 @@ let Request = function(config) {
     };
 
     this.getAmazon = function(options, callback) {
-        if (is.not.existy(options.searchIndex)) {
-            return callback(new Error('options.searchIndex is required'));
+        if (is.not.existy(options.SearchIndex)) {
+            return callback(new Error('options.SearchIndex is required'));
         }
-        if (is.not.existy(options.keywords)) {
-            return callback(new Error('options.keywords is required'));
+        if (is.not.existy(options.Keywords)) {
+            return callback(new Error('options.Keywords is required'));
         }
-        if (is.not.existy(options.responseGroup)) {
-            return callback(new Error('options.responseGroup is required'));
-        }
+        // if (is.not.existy(options.responseGroup)) {
+        //     return callback(new Error('options.responseGroup is required'));
+        // }
 
         // HOWTO - http://docs.aws.amazon.com/AWSECommerceService/latest/DG/Query_QueryAuth.html
         this.params = {
@@ -35,11 +35,10 @@ let Request = function(config) {
                 AWSAccessKeyId: config.accessKeyId,
                 AssociateTag: config.associateId,
                 SearchIndex: options.searchIndex,
-                Sort: price,
+                Sort: 'price',
                 Keywords: options.keywords,
-                ResponseGroup: options.responseGroup,
-                Timestamp: new Date().toISOString(),    // [YYYY-MM-DDThh:mm:ssZ]
-                Signature: this.requestSignature
+                // ResponseGroup: options.responseGroup,
+                Timestamp: new Date().toISOString()    // [YYYY-MM-DDThh:mm:ssZ]
             }
         };
 
@@ -51,15 +50,14 @@ let Request = function(config) {
 
         console.log('params: ', this.params);
 
-        return callback(null, {});
         // Make request
-        // this._sendRequest(this.params, function(err, statusCode, body) {
-        //     console.log('body: ', body);
-        //     if (statusCode !== '200') {
-        //         return callback(err, new Error('statusCode: ' + statusCode));
-        //     }
-        //     return callback(err, body);
-        // });
+        this._sendRequest(this.params, function(err, statusCode, body) {
+            console.log('body: ', body);
+            if (statusCode !== '200') {
+                return callback(err, new Error('statusCode: ' + statusCode));
+            }
+            return callback(err, body);
+        });
     };
 };
 
