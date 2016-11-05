@@ -6,24 +6,38 @@ var Amazon = function(config) {
         return new Amazon();
     }
 
-    this.config = config;
+    this.config = config;   // TODO - once it works, try removing this line
     this.aws = require('aws-lib');
     this.prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
+    this.Request = require('./helpers/api-request.js');
+    this.request = new this.Request(config);
 
     // Internal methods
     this.amazonApi = function(options, callback) {
-        this.prodAdv.call("ItemSearch", options, function(err, result) {
-            if (err) {
-                console.error(err);
-                return callback(err, []);
-            }
-            if (result.Items.Request.IsValid === "False") {
-                console.warn(new Error("invalid request to Amazon"));
-                return callback(err, []);
-            }
+        this.request.getAmazon(options, function(err, results) {
+                if (err) {
+                    console.error(err);
+                    return callback(err, []);
+                }
+                if (results.Items.Request.IsValid === "False") {
+                    console.warn(new Error("invalid request to Amazon"));
+                    return callback(err, []);
+                }
 
-            return callback(err, result.Items.Item);
+                return callback(err, results.Items.Item);
         });
+        // this.prodAdv.call("ItemSearch", options, function(err, result) {
+        //     if (err) {
+        //         console.error(err);
+        //         return callback(err, []);
+        //     }
+        //     if (result.Items.Request.IsValid === "False") {
+        //         console.warn(new Error("invalid request to Amazon"));
+        //         return callback(err, []);
+        //     }
+        //
+        //     return callback(err, result.Items.Item);
+        // });
     };
 
     this.findIndices = function(query, callback) {
