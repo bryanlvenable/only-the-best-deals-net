@@ -4,12 +4,11 @@ module.exports = function (router) {
         config = require('../config/config.js'),
         search = new Search(config);
 
-    var resultsGet = function(req, res, next) {
-
+    var getResults = function(req, res, next) {
         search.search(req.query.q, function(err, results) {
             if (err) {
-                console.log(err);
                 res.render('home');
+                return;
             }
 
             res.render('search', {
@@ -19,7 +18,7 @@ module.exports = function (router) {
         });
     };
 
-    router.get('/search', resultsGet);
+    router.get('/search', getResults);
 
     return router;
 };

@@ -17,43 +17,33 @@ var Amazon = function(config) {
     this.amazonApi = function(options, callback) {
         this.request.getAmazon(options, function(err, results) {
                 if (err) {
-                    console.error(err);
-                    return callback(err, []);
+                    return callback(err);
                 }
+                // TODO - move this to api-request.js
                 if (is.existy(results.Items) && results.Items.Request.IsValid === "False") {
-                    let err = new Error("invalid request to Amazon");
-                    console.warn(err);
-                    return callback(err, []);
+                    err = new Error("invalid request to Amazon");
+                    return callback(err);
                 }
                 if (is.not.existy(results.Items) || is.not.existy(results.Items.Item)) {
-                    let err = new Error("response contains no items :(");
-                    console.warn(err);
-                    return callback(err, []);
+                    err = new Error("getAmazon() response contains no items :(");
+                    return callback(err);
                 }
 
                 return callback(err, results.Items.Item);
         });
-        // this.prodAdv.call("ItemSearch", options, function(err, result) {
-        //     if (err) {
-        //         console.error(err);
-        //         return callback(err, []);
-        //     }
-        //     if (result.Items.Request.IsValid === "False") {
-        //         console.warn(new Error("invalid request to Amazon"));
-        //         return callback(err, []);
-        //     }
-        //
-        //     return callback(err, result.Items.Item);
-        // });
     };
 
     this.findIndices = function(query, callback) {
         this.options = {
-            Keywords: query,
-            SearchIndex: "All"
+            keywords: query,
+            searchIndex: "All"
         };
 
         this.amazonApi(this.options, function(err, results) {
+            if (err) {
+
+                return callback(err);
+            }
             let productGroups = {};
             let indices = [];
             let indicesConverter = {
@@ -90,6 +80,9 @@ var Amazon = function(config) {
         };
 
         this.amazonApi(this.options, function(err, result) {
+            if (err) {
+                return callback(err);
+            }
             let results = [];
 
             result.forEach(function(item) {
@@ -127,8 +120,7 @@ Amazon.prototype.search = function(query, callback) {
 
     this.findIndices(query, function(err, indices) {
         if (err) {
-            console.error(err);
-            return callback(err, {});
+            return callback(err);
         }
 
         let options = {
