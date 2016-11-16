@@ -21,12 +21,10 @@ var Amazon = function(config) {
                 }
                 // TODO - move this to api-request.js
                 if (is.existy(results.Items) && results.Items.Request.IsValid === "False") {
-                    err = new Error("invalid request to Amazon");
-                    return callback(err);
+                    return callback(new Error("invalid request to Amazon"));
                 }
                 if (is.not.existy(results.Items) || is.not.existy(results.Items.Item)) {
-                    err = new Error("getAmazon() response contains no items :(");
-                    return callback(err);
+                    return callback(new Error("getAmazon() response contains no items :("));
                 }
 
                 return callback(err, results.Items.Item);
@@ -130,8 +128,7 @@ Amazon.prototype.search = function(query, callback) {
 
         self.searchByIndex(options, function(err, results) {
             if (err) {
-                console.error(err);
-                return callback(err, {});
+                return callback(err);
             }
 
             return callback(null, results);

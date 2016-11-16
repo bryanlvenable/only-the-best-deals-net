@@ -7,11 +7,11 @@ module.exports = function (router) {
     var getResults = function(req, res, next) {
         search.search(req.query.q, function(err, results) {
             if (err) {
-                res.render('home');
-                return;
+                console.error(err);
+                return res.render('home');
             }
 
-            res.render('search', {
+            return res.render('search', {
                 placeholder: req.query.q,
                 results: results
             });

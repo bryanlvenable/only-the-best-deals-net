@@ -1,29 +1,8 @@
 let Request = function(config) {
     'use strict';
-    this.config = config;   // TODO - see if I can remove this
     let request = require('request');
     let is = require('is_js');
     let parseString = require('xml2js').parseString;
-
-    //////////////////////
-    // Helper functions //
-    //////////////////////
-    this._sendRequest = function(options, callback) {
-        request(options, function(err, res, body) {
-            // console.log('Object.keys(res): ', Object.keys(res));
-            // console.log('body: ', body);
-            if (err) {
-                return callback(err);
-            }
-            parseString(body, function(err, result) {
-                if (err) {
-                    return callback(err);
-                }
-                console.log('result: ', result);
-                return callback(null, res.statusCode, result);
-            });
-        });
-    };
 
     /*
     options = {
@@ -57,7 +36,7 @@ let Request = function(config) {
             version: '2011-08-02'
         };
 
-        this.requestComponents = {
+        let requestComponents = {
             // NOTE - Key capitalization consistent with Amazon docs
             endpoint: options.url || DEFAULT.endpoint,
             Service: options.service || DEFAULT.service,
@@ -71,16 +50,17 @@ let Request = function(config) {
         };
 
         if (is.existy(options.responseGroup)) {
-            this.requestComponents.ResponseGroup = options.responseGroup;
+            requestComponents.ResponseGroup = options.responseGroup;
         }
         if (is.existy(options.searchIndex)) {
-            this.requestComponents.SearchIndex = options.searchIndex;
+            requestComponents.SearchIndex = options.searchIndex;
         }
         if (is.existy(options.page)) {
-            this.requestComponents.Page = options.page;
+            requestComponents.Page = options.page;
         }
 
-        this.requestSignature = '';
+        let requestSignature = '';
+
 
         /********** Request example **********
         http://webservices.amazon.com/onca/xml?
@@ -95,7 +75,7 @@ let Request = function(config) {
         &Timestamp=[YYYY-MM-DDThh:mm:ssZ]
         &Signature=[Request Signature]
         */
-        this.requestOrder = [
+        const requestOrder = [
             'endpoint',
             'Service',
             'Operation',
@@ -108,21 +88,20 @@ let Request = function(config) {
             'Timestamp',
             'Signature'
         ];
-        const length = this.requestOrder.length;
-        this.params = '';
+        const length = requestOrder.length;
+        let params = '';
 
-        this.params += this.requestComponents[this.requestOrder[0]] + '?';
+        params += requestComponents[requestOrder[0]] + '?';
         for (var i = 0; i < length - 1; i++) {
-            this.params += this.requestOrder[i] + '=' + this.requestComponents[this.requestOrder[i]] + '&';
+            params += requestOrder[i] + '=' + requestComponents[requestOrder[i]] + '&';
         }
-        this.params += this.requestOrder[length - 1] + '=' + this.requestComponents[this.requestOrder[length - 1]];
+        params += requestOrder[length - 1] + '=' + requestComponents[requestOrder[length - 1]];
 
-        console.log('this.params: ', this.params);
+        console.log('params: ', params);
 
         return callback(new Error('should go to home'));
 
-
-        // request(this.params, function(err, res, body) {
+        // request(params, function(err, res, body) {
         //     if (err) {
         //         return callback(err);
         //     }
@@ -135,15 +114,6 @@ let Request = function(config) {
         //     });
         // });
 
-
-        // Make request
-        // this._sendRequest(this.params, function(err, statusCode, body) {
-        //     // console.log('body: ', body);
-        //     if (statusCode !== '200') {
-        //         return callback(err, new Error('statusCode: ' + statusCode));
-        //     }
-        //     return callback(err, body);
-        // });
     };
 };
 
