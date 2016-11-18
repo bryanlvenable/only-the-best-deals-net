@@ -28,6 +28,10 @@ let Request = function(config) {
         if (is.not.existy(config.associateId)) {
             return callback(new Error('getAmazon(), config.associateId is required'));
         }
+        if (is.not.existy(config.accessKeySecret)) {
+            return callback(new Error('getAmazon(), config.accessKeySecret is required'));
+        }
+
 
         const DEFAULT = {
             endpoint: 'https://webservices.amazon.com/onca/xml',
@@ -76,11 +80,9 @@ let Request = function(config) {
         signatureComponents.sort();
         signature = signatureComponents.join('&');
         signature = 'GET\nwebservices.amazon.com\n/onca/xml\n' + signature;
-        hashedSignature = crypto.createHmac('sha256', signature).digest('hex');
-
-        console.log('hashedSignature: ', hashedSignature);
-
-        // TODO - do this signature thing - I'm done for the night
+        hashedSignature = crypto.createHmac('sha256', config.accessKeySecret)
+        .update(signature).digest('base64');
+        requestComponents.Signature = signature;
 
         /********** Request example **********
         http://webservices.amazon.com/onca/xml?
@@ -119,20 +121,20 @@ let Request = function(config) {
 
         // console.log('params: ', params);
 
-        return callback(new Error('should go to home'));
+        // return callback(new Error('should go to home'));
 
-        // request(params, function(err, res, body) {
-        //     if (err) {
-        //         return callback(err);
-        //     }
-        //     parseString(body, function(err, result) {
-        //         if (err) {
-        //             return callback(err);
-        //         }
-        //         console.log('result: ', result);
-        //         return callback(null, res.statusCode, result);
-        //     });
-        // });
+        request(params, function(err, res, body) {
+            if (err) {
+                return callback(err);
+            }
+            parseString(body, function(err, result) {
+                if (err) {
+                    return callback(err);
+                }
+                console.log('result: ', result);
+                return callback(null, res.statusCode, result);
+            });
+        });
 
     };
 };
