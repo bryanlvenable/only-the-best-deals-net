@@ -3,6 +3,7 @@ let Request = function(config) {
     let request = require('request');
     let is = require('is_js');
     let parseString = require('xml2js').parseString;
+    const crypto = require('crypto');
 
     /*
     options = {
@@ -59,8 +60,27 @@ let Request = function(config) {
             requestComponents.Page = options.page;
         }
 
-        let requestSignature = '';
+        let signature = '',
+            signatureComponents = [],
+            hashedSignature;
 
+        for (let key in requestComponents) {
+            if (key === 'endpoint') {
+                continue;
+            }
+            let keyValue = '' + key + '=' + requestComponents[key] + '\n';
+            keyValue = encodeURIComponent(keyValue);
+            signatureComponents.push(keyValue);
+        }
+
+        signatureComponents.sort();
+        signature = signatureComponents.join('&');
+        signature = 'GET\nwebservices.amazon.com\n/onca/xml\n' + signature;
+        hashedSignature = crypto.createHmac('sha256', signature).digest('hex');
+
+        console.log('hashedSignature: ', hashedSignature);
+
+        // TODO - do this signature thing - I'm done for the night
 
         /********** Request example **********
         http://webservices.amazon.com/onca/xml?
@@ -97,7 +117,7 @@ let Request = function(config) {
         }
         params += requestOrder[length - 1] + '=' + requestComponents[requestOrder[length - 1]];
 
-        console.log('params: ', params);
+        // console.log('params: ', params);
 
         return callback(new Error('should go to home'));
 
