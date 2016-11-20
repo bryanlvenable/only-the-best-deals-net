@@ -6,16 +6,15 @@ var Amazon = function(config) {
         return new Amazon();
     }
 
-    this.config = config;   // TODO - once it works, try removing this line
     this.aws = require('aws-lib');
-    this.prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
+    const prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
     this.Request = require('./helpers/api-request.js');
     this.request = new this.Request(config);
-    let is = require('is_js');
+    const is = require('is_js');
 
     // Internal methods
     this.amazonApi = function(options, callback) {
-        this.request.getAmazon(options, function(err, results) {
+        prodAdv.call('ItemSearch', options, function(err, results) {
                 if (err) {
                     return callback(err);
                 }
@@ -33,13 +32,12 @@ var Amazon = function(config) {
 
     this.findIndices = function(query, callback) {
         this.options = {
-            keywords: query,
-            searchIndex: "All"
+            Keywords: query,
+            SearchIndex: "All"
         };
 
         this.amazonApi(this.options, function(err, results) {
             if (err) {
-
                 return callback(err);
             }
             let productGroups = {};
