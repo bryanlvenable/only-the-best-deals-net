@@ -8,8 +8,6 @@ var Amazon = function(config) {
 
     this.aws = require('./helpers/aws.js');
     const prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
-    this.Request = require('./helpers/api-request.js');
-    this.request = new this.Request(config);
     const is = require('is_js');
 
     // Internal methods
@@ -93,8 +91,8 @@ var Amazon = function(config) {
             let results = [];
 
             result.forEach(function(item) {
-                console.log('JSON.stringify(item.ItemAttributes[0], null, 2): ', JSON.stringify(item.ItemAttributes[0], null, 2));
-                console.log('Object.keys(item.ItemAttributes[0]): ', Object.keys(item.ItemAttributes[0]));
+                // console.log('JSON.stringify(item.ItemAttributes[0], null, 2): ', JSON.stringify(item.ItemAttributes[0], null, 2));
+                // console.log('Object.keys(item.ItemAttributes[0]): ', Object.keys(item.ItemAttributes[0]));
                 let entry = {
                     url: item.DetailPageURL,
                     title: item.ItemAttributes[0].Title,
