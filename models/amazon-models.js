@@ -6,8 +6,8 @@ var Amazon = function(config) {
         return new Amazon();
     }
 
-    this.aws = require('./helpers/aws.js');
-    const prodAdv = this.aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
+    const aws = require('./helpers/aws.js');
+    const prodAdv = aws.createProdAdvClient(config.accessKeyId, config.accessKeySecret, config.associateId);
     const is = require('is_js');
 
     // Internal methods
@@ -33,46 +33,103 @@ var Amazon = function(config) {
     };
 
     this.findIndices = function(query, callback) {
-        return callback(null, ["LawnAndGarden"]);
-        // this.options = {
-        //     Keywords: query,
-        //     SearchIndex: "All"
-        // };
-        //
-        // this.amazonApi(this.options, function(err, results) {
-        //     if (err) {
-        //         return callback(err);
-        //     }
-        //     // console.log('results in here: ', results);
-        //     if (is.not.object(results)) {
-        //         return callback(new Error('amazonApi() results should be an Object'));
-        //     }
-        //
-        //     let productGroups = {};
-        //     let indices = [];
-        //     let indicesConverter = {
-        //         "Sports": "SportingGoods",
-        //         "Lawn & Patio": "LawnAndGarden"
-        //     };
-        //
-        //     // Find out what product groups are being displayed
-        //     results.forEach(function(item) {
-        //         let productGroup = item.ItemAttributes.ProductGroup;
-        //         if(productGroups[productGroup]) {   // If product group exists add one to count
-        //             productGroups[productGroup] = productGroups[productGroup] + 1;
-        //         } else {    // Otherwise add it and initialize its count
-        //             // Check if we support that current index
-        //             // If we support it, it will be in indicesConverter
-        //             if (indicesConverter[productGroup] !== undefined) {
-        //                 indices.push(indicesConverter[productGroup]);
-        //                 productGroups[productGroup] = 1;
-        //             }
-        //         }
-        //     });
-        //
-        //     // return callback(null, indices);
-        //     return callback(err, ["LawnAndGarden"]);
-        // });
+        this.options = {
+            Keywords: query,
+            SearchIndex: "All"
+        };
+
+        this.amazonApi(this.options, function(err, results) {
+            if (err) {
+                return callback(err);
+            }
+            // console.log('results in here: ', results);
+            if (is.not.object(results)) {
+                return callback(new Error('amazonApi() results should be an Object'));
+            }
+
+            let productGroups = {};
+            let indices = [];
+            let indicesConverter = {
+                "Automotive Parts and Accessories": "Automotive",
+                "Lawn & Patio": "LawnAndGarden",
+                "Sports": "SportingGoods",
+                // TODO: confirm and place in a-z order above
+                "Amazon Instant Video": "UnboxVideo",
+                "Major Appliances": "Appliances",  // TODO
+                "Apps & Games": "MobileApps",
+                "Arts, Crafts & Sewing": "ArtsAndCrafts",
+                "Baby": "Baby",
+                "Beauty": "Beauty",
+                "Books": "Books",
+                "CDs & Vinyl": "Music",
+                "Cell Phones & Accessories": "Wireless",
+                "Clothing, Shoes & Jewelry": "Fashion",
+                "Clothing, Shoes & Jewelry - Baby": "FashionBaby",
+                "Clothing, Shoes & Jewelry - Boys": "FashionBoys",
+                "Clothing, Shoes & Jewelry - Girls": "FashionGirls",
+                "Clothing, Shoes & Jewelry - Men": "FashionMen",
+                "Clothing, Shoes & Jewelry - Women": "FashionWomen",
+                "Collectibles & Fine Arts": "Collectibles",
+                "Computers": "PCHardware",
+                "Digital Music": "MP3Downloads",
+                "Electronics": "Electronics",
+                "Gift Cards": "GiftCards",
+                "Grocery & Gourmet Food": "Grocery",
+                "Health & Personal Care": "HealthPersonalCare",
+                "Home & Kitchen": "HomeGarden",
+                "Industrial & Scientific": "Industrial",
+                "Kindle Store": "KindleStore",
+                "Luggage & Travel Gear": "Luggage",
+                "Magazine Subscriptions": "Magazines",
+                "Movies & TV": "Movies",
+                "Musical Instruments": "MusicalInstruments",
+                "Office Products": "OfficeProducts",
+                "Pet Supplies": "PetSupplies",
+                "Prime Pantry": "Pantry",
+                "Software": "Software",
+                "Home Improvement": "Tools", // TODO
+                "Toys & Games": "Toys",
+                "Video Games": "VideoGames",
+                "Wine": "Wine"
+            };
+
+            // Find out what product groups are being displayed
+            results.forEach(function(item) {
+                // console.log('JSON.stringify(item.ItemAttributes[0].ProductGroup[0], null, 2): ', JSON.stringify(item.ItemAttributes[0].ProductGroup[0], null, 2));
+                // console.log('Object.keys(item.ItemAttributes[0].ProductGroup[0]): ', Object.keys(item.ItemAttributes[0].ProductGroup[0]));
+
+                // NOTE - you are here!
+                let productGroup = item.ItemAttributes[0].ProductGroup[0];
+                if(productGroups[productGroup]) {   // If product group exists add one to count
+                    productGroups[productGroup] = productGroups[productGroup] + 1;
+                } else {    // Otherwise add it and initialize its count
+                    // Check if we support that current index
+                    // If we support it, it will be in indicesConverter
+                    if (indicesConverter[productGroup] !== undefined) {
+                        indices.push(indicesConverter[productGroup]);
+                        productGroups[productGroup] = 1;
+                    } else {
+                        // Log the product group that we haven't confirmed yet
+                        console.log('Unrecognized productGroup: ', productGroup);
+                    }
+                }
+            });
+            console.log('productGroups: ', productGroups);
+            // TODO Return index with highest frequency
+            let mostFrequent = '',
+                frequency = 0;
+            for (var key in productGroups) {
+                if (productGroups[key] > frequency) {
+                    frequency = productGroups[key];
+                    mostFrequent = key;
+                }
+            }
+
+            // console.log('mostFrequent: ', mostFrequent);
+
+            // return callback(null, indices);
+            return callback(err, indicesConverter[mostFrequent]);
+        });
     };
 
     this.searchByIndex = function(query, callback) {
@@ -126,15 +183,19 @@ Amazon.prototype.search = function(query, callback) {
     }
 
     let self = this;
+    const is = require('is_js');
 
-    this.findIndices(query, function(err, indices) {
+    this.findIndices(query, function(err, index) {
         if (err) {
             return callback(err);
+        }
+        if (is.not.existy(index) || is.not.string(index) || index.length === 0) {
+            return callback(new Error('index must be a string with non-zero length'));
         }
 
         let options = {
                 keywords: query,
-                searchIndex: indices[0] // NOTE - for now only search one index
+                searchIndex: index
             };
 
         self.searchByIndex(options, function(err, results) {
