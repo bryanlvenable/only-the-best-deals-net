@@ -10,10 +10,10 @@ module.exports = function (router) {
         express.search(req.query.q, function(err, result) {
             if (err) {
                 console.error(err);
-                return res.send('http://onlythebestdeals.net/');
+                return res.send(home);
             }
             if (is.not.existy(result) || is.not.string(result) || result.length === 0) {
-                return res.send('http://onlythebestdeals.net/');
+                return res.send(home);
             }
 
             return res.send(result);

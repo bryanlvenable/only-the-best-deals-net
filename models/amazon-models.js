@@ -13,10 +13,6 @@ var Amazon = function(config) {
     // Internal methods
     this.amazonApi = function(options, callback) {
         prodAdv.call('ItemSearch', options, function(err, results) {
-            // console.log('JSON.stringify(results, null, 2): ', JSON.stringify(results.ItemSearchResponse.Items[0].Item[0], null, 2));
-            // console.log('Object.keys(results.ItemSearchResponse.Items[0].Item): ', Object.keys(results.ItemSearchResponse.Items[0].Item[0]));
-
-            // console.log('results.ItemSearchResponse.Items[0].Item[0]: ', results.ItemSearchResponse.Items[0].Item.Items);
             if (err) {
                 return callback(err);
             }
@@ -42,13 +38,11 @@ var Amazon = function(config) {
             if (err) {
                 return callback(err);
             }
-            // console.log('results in here: ', results);
             if (is.not.object(results)) {
                 return callback(new Error('amazonApi() results should be an Object'));
             }
 
             let productGroups = {};
-            let indices = [];
             let indicesConverter = {
                 "Automotive Parts and Accessories": "Automotive",
                 "Lawn & Patio": "LawnAndGarden",
@@ -96,10 +90,6 @@ var Amazon = function(config) {
 
             // Find out what product groups are being displayed
             results.forEach(function(item) {
-                // console.log('JSON.stringify(item.ItemAttributes[0].ProductGroup[0], null, 2): ', JSON.stringify(item.ItemAttributes[0].ProductGroup[0], null, 2));
-                // console.log('Object.keys(item.ItemAttributes[0].ProductGroup[0]): ', Object.keys(item.ItemAttributes[0].ProductGroup[0]));
-
-                // NOTE - you are here!
                 let productGroup = item.ItemAttributes[0].ProductGroup[0];
                 if(productGroups[productGroup]) {   // If product group exists add one to count
                     productGroups[productGroup] = productGroups[productGroup] + 1;
@@ -107,16 +97,13 @@ var Amazon = function(config) {
                     // Check if we support that current index
                     // If we support it, it will be in indicesConverter
                     if (indicesConverter[productGroup] !== undefined) {
-                        indices.push(indicesConverter[productGroup]);
                         productGroups[productGroup] = 1;
                     } else {
-                        // Log the product group that we haven't confirmed yet
-                        // console.log('Unrecognized productGroup: ', productGroup);
+                        // TODO - Log the product group that we haven't confirmed yet
                     }
                 }
             });
-            // console.log('productGroups: ', productGroups);
-            // TODO Return index with highest frequency
+
             let mostFrequent = '',
                 frequency = 0;
             for (var key in productGroups) {
@@ -125,10 +112,7 @@ var Amazon = function(config) {
                     mostFrequent = key;
                 }
             }
-
-            // console.log('mostFrequent: ', mostFrequent);
-
-            // return callback(null, indices);
+            // TODO - currently only returning the most frequent index
             return callback(err, indicesConverter[mostFrequent]);
         });
     };
@@ -145,13 +129,10 @@ var Amazon = function(config) {
             if (err) {
                 return callback(err);
             }
-            // console.log('result: ', result);
 
             let results = [];
 
             result.forEach(function(item) {
-                // console.log('JSON.stringify(item.ItemAttributes[0], null, 2): ', JSON.stringify(item.ItemAttributes[0], null, 2));
-                // console.log('Object.keys(item.ItemAttributes[0]): ', Object.keys(item.ItemAttributes[0]));
                 let entry = {
                     url: item.DetailPageURL,
                     title: item.ItemAttributes[0].Title,
