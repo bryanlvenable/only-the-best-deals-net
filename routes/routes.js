@@ -11,6 +11,7 @@ module.exports = function(app, route) {
     });
 
     route = require('./search-routes')(route);
+    route = require('./express-routes')(route);
 
     return route;
 };
