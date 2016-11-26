@@ -55,12 +55,12 @@ var Amazon = function(config) {
                 "Sports": "SportingGoods",
                 // TODO: confirm and place in a-z order above
                 "Amazon Instant Video": "UnboxVideo",
-                "Major Appliances": "Appliances",  // TODO
+                "Major Appliances": "Appliances",  // DONE
                 "Apps & Games": "MobileApps",
                 "Arts, Crafts & Sewing": "ArtsAndCrafts",
                 "Baby": "Baby",
                 "Beauty": "Beauty",
-                "Books": "Books",
+                "Book": "Books",  // DONE - NOTE - this might take some fenagling with the query by index
                 "CDs & Vinyl": "Music",
                 "Cell Phones & Accessories": "Wireless",
                 "Clothing, Shoes & Jewelry": "Fashion",
@@ -71,7 +71,8 @@ var Amazon = function(config) {
                 "Clothing, Shoes & Jewelry - Women": "FashionWomen",
                 "Collectibles & Fine Arts": "Collectibles",
                 "Computers": "PCHardware",
-                "Digital Music": "MP3Downloads",
+                "Digital Music Album": "MP3Downloads",   // DONE
+                "Digital Music Track": "MP3Downloads",   // DONE - So now I'm not sure if this is the right path. I will add in error handling later TODO! But for now I will continue on with the deals express.
                 "Electronics": "Electronics",
                 "Gift Cards": "GiftCards",
                 "Grocery & Gourmet Food": "Grocery",
@@ -81,13 +82,13 @@ var Amazon = function(config) {
                 "Kindle Store": "KindleStore",
                 "Luggage & Travel Gear": "Luggage",
                 "Magazine Subscriptions": "Magazines",
-                "Movies & TV": "Movies",
+                "Movie": "Movies",  // DONE
                 "Musical Instruments": "MusicalInstruments",
                 "Office Products": "OfficeProducts",
                 "Pet Supplies": "PetSupplies",
                 "Prime Pantry": "Pantry",
                 "Software": "Software",
-                "Home Improvement": "Tools", // TODO
+                "Home Improvement": "Tools", // DONE
                 "Toys & Games": "Toys",
                 "Video Games": "VideoGames",
                 "Wine": "Wine"
@@ -110,11 +111,11 @@ var Amazon = function(config) {
                         productGroups[productGroup] = 1;
                     } else {
                         // Log the product group that we haven't confirmed yet
-                        console.log('Unrecognized productGroup: ', productGroup);
+                        // console.log('Unrecognized productGroup: ', productGroup);
                     }
                 }
             });
-            console.log('productGroups: ', productGroups);
+            // console.log('productGroups: ', productGroups);
             // TODO Return index with highest frequency
             let mostFrequent = '',
                 frequency = 0;
@@ -144,6 +145,7 @@ var Amazon = function(config) {
             if (err) {
                 return callback(err);
             }
+            console.log('result: ', result);
 
             let results = [];
 
