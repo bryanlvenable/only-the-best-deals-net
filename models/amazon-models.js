@@ -145,7 +145,7 @@ var Amazon = function(config) {
             if (err) {
                 return callback(err);
             }
-            console.log('result: ', result);
+            // console.log('result: ', result);
 
             let results = [];
 

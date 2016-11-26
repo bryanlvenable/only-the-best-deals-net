@@ -7,7 +7,8 @@ var Express = function(config) {
 Express.prototype.search = function(options, callback) {
     this.amazon = new this.Amazon(this.config.amazonAssociates);
     this.amazon.search(options, function(err, results) {
-        callback(err, results);
+        // TODO - currently only returning the first result's url
+        callback(err, results[0].url[0]);
     });
 };
 
