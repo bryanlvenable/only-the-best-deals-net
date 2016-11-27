@@ -20,8 +20,8 @@ var Amazon = function(config) {
             if (is.existy(results.ItemSearchResponse.Items[0]) && results.ItemSearchResponse.Items[0].Request[0].IsValid === "False") {
                 return callback(new Error("invalid request to Amazon"));
             }
-            if (is.not.existy(results.ItemSearchResponse.Items[0]) || is.not.existy(results.ItemSearchResponse.Items[0].Item[0])) {
-                return callback(new Error("getAmazon() response contains no items :("));
+            if (is.not.existy(results.ItemSearchResponse.Items[0]) || is.not.existy(results.ItemSearchResponse.Items[0].Item) || is.not.existy(results.ItemSearchResponse.Items[0].Item[0])) {
+                return callback(new Error(results.ItemSearchResponse.Items[0].Request[0].Errors[0].Error[0].Message[0]));
             }
 
             return callback(err, results.ItemSearchResponse.Items[0].Item);
