@@ -121,7 +121,7 @@ var Amazon = function(config) {
         this.options = {
             Keywords: query.keywords,
             SearchIndex: query.searchIndex,
-            ResponseGroup: "ItemAttributes, Images, OfferSummary",
+            ResponseGroup: query.responseGroup,
             Sort: "relevancerank"
         };
 
@@ -136,7 +136,10 @@ var Amazon = function(config) {
                 let entry = {
                     url: item.DetailPageURL,
                     title: item.ItemAttributes[0].Title,
+                    iframe: item.CustomerReviews[0].IFrameURL
                 };
+
+
 
                 if (item.OfferSummary[0] &&
                     item.OfferSummary[0].LowestNewPrice &&
@@ -151,8 +154,6 @@ var Amazon = function(config) {
 
                 results.push(entry);
             });
-
-
 
             return callback(null, results);
         });
@@ -178,7 +179,8 @@ Amazon.prototype.search = function(query, callback) {
 
         let options = {
                 keywords: query,
-                searchIndex: index
+                searchIndex: index,
+                responseGroup: "ItemAttributes, Images, OfferSummary, Reviews"
             };
 
         self.searchByIndex(options, function(err, results) {

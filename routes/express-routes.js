@@ -12,13 +12,13 @@ module.exports = function (router) {
         express.search(req.query.q, function(err, result) {
             if (err) {
                 console.error(err);
-                return res.redirect('express');
+                return res.render('express');
             }
             if (is.not.existy(result) || is.not.string(result) || result.length === 0) {
-                return res.redirect('express');
+                return res.render('express');
             }
 
-            return res.redirect(result);
+            return res.send(result);
         });
     };
 
