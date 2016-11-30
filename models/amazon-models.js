@@ -139,8 +139,6 @@ var Amazon = function(config) {
                     iframe: item.CustomerReviews[0].IFrameURL
                 };
 
-
-
                 if (item.OfferSummary[0] &&
                     item.OfferSummary[0].LowestNewPrice &&
                     item.OfferSummary[0].LowestNewPrice[0].FormattedPrice
